@@ -1,211 +1,84 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login — CogniLoad</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0a0f0a;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        body::before {
-            content: '';
-            position: absolute;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
-            top: -100px; left: -100px;
-            pointer-events: none;
-        }
-        body::after {
-            content: '';
-            position: absolute;
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(34,197,94,0.05) 0%, transparent 70%);
-            bottom: -50px; right: -50px;
-            pointer-events: none;
-        }
-        .container {
-            width: 100%;
-            max-width: 420px;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        .logo {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        .logo-icon {
-            width: 52px; height: 52px;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            border-radius: 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 12px;
-            box-shadow: 0 0 30px rgba(34,197,94,0.3);
-        }
-        .logo h1 {
-            color: #fff;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .logo p {
-            color: #4b5563;
-            font-size: 13px;
-            margin-top: 4px;
-        }
-        .card {
-            background: #111711;
-            border: 1px solid #1f2d1f;
-            border-radius: 20px;
-            padding: 36px;
-        }
-        .card h2 {
-            color: #f9fafb;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .card .subtitle {
-            color: #4b5563;
-            font-size: 13px;
-            margin-bottom: 28px;
-        }
-        .form-group {
-            margin-bottom: 18px;
-        }
-        label {
-            display: block;
-            color: #9ca3af;
-            font-size: 12px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-        input {
-            width: 100%;
-            background: #0d130d;
-            border: 1px solid #1f2d1f;
-            border-radius: 10px;
-            padding: 12px 16px;
-            color: #f9fafb;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        input:focus { border-color: #22c55e; }
-        input::placeholder { color: #374151; }
-        .btn {
-            width: 100%;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 13px;
-            font-size: 15px;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: opacity 0.2s, transform 0.1s;
-            box-shadow: 0 4px 20px rgba(34,197,94,0.25);
-        }
-        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn:active { transform: translateY(0); }
-        .divider {
-            text-align: center;
-            color: #374151;
-            font-size: 12px;
-            margin: 20px 0;
-            position: relative;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 42%;
-            height: 1px;
-            background: #1f2d1f;
-        }
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
-        .link-btn {
-            width: 100%;
-            background: transparent;
-            border: 1px solid #1f2d1f;
-            border-radius: 10px;
-            padding: 12px;
-            color: #9ca3af;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-            transition: border-color 0.2s, color 0.2s;
-        }
-        .link-btn:hover { border-color: #22c55e; color: #22c55e; }
-        .error {
-            background: rgba(239,68,68,0.1);
-            border: 1px solid rgba(239,68,68,0.2);
-            border-radius: 8px;
-            padding: 10px 14px;
-            color: #f87171;
-            font-size: 13px;
-            margin-bottom: 18px;
-        }
-        .success {
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.2);
-            border-radius: 8px;
-            padding: 10px 14px;
-            color: #4ade80;
-            font-size: 13px;
-            margin-bottom: 18px;
-        }
-    </style>
+<title>CogniLoad — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0a;--surface:#111;--surface2:#1a1a1a;--border:#1f1f1f;--border2:#2a2a2a;--text:#ededed;--muted:#888;--muted2:#444;--green:#00ff88;--cyan:#00d4ff}
+html,body{height:100%;font-family:'Geist','Inter',sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+.orb{position:fixed;width:600px;height:600px;background:radial-gradient(circle,rgba(0,255,136,0.05) 0%,transparent 60%);top:-150px;right:-150px;pointer-events:none;z-index:0}
+.orb2{position:fixed;width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,255,0.04) 0%,transparent 60%);bottom:-100px;left:-100px;pointer-events:none;z-index:0}
+.top-bar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:20px 32px;border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--green),var(--cyan));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.brand-name{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.3px}
+.top-right{font-size:13px;color:var(--muted)}
+.top-right a{color:var(--text);text-decoration:none;font-weight:500}
+.top-right a:hover{text-decoration:underline}
+.page{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.box{width:100%;max-width:380px}
+.box-head{margin-bottom:28px}
+.box-head h1{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-.5px;margin-bottom:6px}
+.box-head p{font-size:14px;color:var(--muted);line-height:1.5}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:14px}
+.field{margin-bottom:14px}
+.field:last-of-type{margin-bottom:0}
+label{display:block;font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px}
+input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
+input:focus{border-color:#444}
+input::placeholder{color:var(--muted2)}
+.btn{width:100%;background:var(--text);color:var(--bg);border:none;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:18px;transition:opacity .15s}
+.btn:hover{opacity:.88}
+.div{display:flex;align-items:center;gap:10px;margin:14px 0}
+.div-line{flex:1;height:1px;background:var(--border)}
+.div-text{font-size:12px;color:var(--muted2)}
+.btn-g{display:block;width:100%;background:transparent;border:1px solid var(--border2);border-radius:8px;padding:10px 16px;color:var(--muted);font-size:14px;font-family:inherit;cursor:pointer;text-align:center;text-decoration:none;transition:all .15s}
+.btn-g:hover{border-color:#444;color:var(--text)}
+.alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:flex;align-items:flex-start;gap:8px}
+.err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);color:#fca5a5}
+.ok{background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15);color:#6ee7b7}
+.foot{margin-top:20px;text-align:center;font-size:12px;color:var(--muted2);line-height:1.6}
+.foot a{color:var(--muted);text-decoration:none}
+.foot a:hover{color:var(--text)}
+</style>
 </head>
 <body>
-<div class="container">
-    <div class="logo">
-        <div class="logo-icon">🧠</div>
-        <h1>CogniLoad</h1>
-        <p>Cognitive Load Estimation System</p>
+<div class="orb"></div><div class="orb2"></div>
+<div class="top-bar">
+  <a href="/" class="brand">
+    
+    <span class="brand-name">CogniLoad</span>
+  </a>
+  <div class="top-right">Don't have an account? <a href="/signup">Sign up</a></div>
+</div>
+<div class="page">
+  <div class="box">
+    <div class="box-head">
+      <h1>Welcome back</h1>
+      <p>Sign in to your CogniLoad account to continue.</p>
     </div>
+    <div class="alert err" th:if="${error}"><span>⚠</span><span th:text="${error}"></span></div>
+    <div class="alert ok" th:if="${param.registered}"><span>✓</span><span>Account created. Sign in to continue.</span></div>
+    <div class="alert ok" th:if="${param.verified}"><span>✓</span><span>Email verified. You can now sign in.</span></div>
     <div class="card">
-        <h2>Welcome back</h2>
-        <p class="subtitle">Sign in to your account to continue</p>
-
-        <div class="error" th:if="${error}" th:text="${error}"></div>
-        <div class="success" th:if="${param.registered}">Account created! Please sign in.</div>
-
-        <form action="/login" method="post">
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" name="email" placeholder="you@example.com" required/>
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" placeholder="••••••••" required/>
-            </div>
-            <button type="submit" class="btn">Sign In →</button>
-        </form>
-
-        <div class="divider">or</div>
-        <a href="/signup" class="link-btn">Create new account</a>
+      <form action="/login" method="post">
+        <div class="field">
+          <label>Email address</label>
+          <input type="email" name="email" placeholder="you@example.com" required/>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Your password" required/>
+        </div>
+        <button type="submit" class="btn">Continue →</button>
+      </form>
     </div>
+    <div class="div"><div class="div-line"></div><span class="div-text">or</span><div class="div-line"></div></div>
+    <a href="/signup" class="btn-g">Create an account</a>
+    <div class="foot">By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</div>
+  </div>
 </div>
 </body>
 </html>
