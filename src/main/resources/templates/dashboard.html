@@ -155,6 +155,40 @@ nav{position:relative;z-index:10;display:flex;justify-content:space-between;alig
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--black)}
 ::-webkit-scrollbar-thumb{background:rgba(0,255,136,.3);border-radius:2px}
+@media (max-width: 768px) {
+  /* Nav */
+  nav { padding: 14px 20px; }
+  .nav-name { font-size: 13px; letter-spacing: 2px; }
+  .btn-nav { padding: 6px 10px; font-size: 10px; }
+
+  /* Container */
+  .container { padding: 28px 16px 60px; }
+
+  /* CLI Banner */
+  .cli-banner { flex-direction: column; gap: 24px; padding: 24px 20px; }
+  .cli-right { text-align: left; }
+  .cli-score { font-size: 52px; }
+
+  /* Stats Row */
+  .stats-row { grid-template-columns: 1fr; gap: 10px; }
+
+  /* Tabs */
+  .tabs { gap: 2px; padding: 3px; }
+  .tab { min-width: 70px; padding: 8px 10px; font-size: 9px; letter-spacing: 1px; }
+
+  /* Section */
+  .section { padding: 20px 16px; }
+
+  /* Quiz options */
+  .quiz-options { grid-template-columns: 1fr; }
+
+  /* Flashcards */
+  .flashcard-grid { grid-template-columns: 1fr; }
+  .flashcard { height: 160px; }
+
+  /* Page header */
+  .page-header h1 { font-size: 28px; }
+}
 </style>
 </head>
 <body>
@@ -377,6 +411,7 @@ nav{position:relative;z-index:10;display:flex;justify-content:space-between;alig
       </div>
     </div>
   </div>
+  
 
 </div>
 
