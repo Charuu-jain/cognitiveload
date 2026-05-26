@@ -151,4 +151,113 @@ public class AuthController {
         session.invalidate();
         return "redirect:/login";
     }
+    // Show forgot password page
+@GetMapping("/forgot-password")
+public String forgotPasswordPage() {
+    return "forgot-password";
+}
+
+// Send OTP to email
+@PostMapping("/forgot-password")
+public String forgotPassword(
+        @RequestParam String email,
+        HttpSession session,
+        Model model) {
+
+    Optional<User> userOpt = userRepository.findByEmail(email);
+    if (userOpt.isEmpty()) {
+        model.addAttribute("error", "No account found with that email!");
+        return "forgot-password";
+    }
+
+    User user = userOpt.get();
+    String otp = emailService.generateOTP();
+    user.setOtp(otp);
+    user.setOtpExpiry(LocalDateTime.now().plusMinutes(10));
+    userRepository.save(user);
+
+    try {
+        emailService.sendPasswordResetOTP(email, otp);
+    } catch (Exception e) {
+        model.addAttribute("error", "Could not send OTP. Try again.");
+        return "forgot-password";
+    }
+
+    session.setAttribute("resetEmail", email);
+    return "redirect:/reset-otp";
+}
+
+// Show OTP verification page
+@GetMapping("/reset-otp")
+public String resetOtpPage(HttpSession session, Model model) {
+    if (session.getAttribute("resetEmail") == null) {
+        return "redirect:/forgot-password";
+    }
+    model.addAttribute("email", session.getAttribute("resetEmail"));
+    return "reset-otp";
+}
+
+// Verify OTP
+@PostMapping("/reset-otp")
+public String verifyResetOtp(
+        @RequestParam String otp,
+        HttpSession session,
+        Model model) {
+
+    String email = (String) session.getAttribute("resetEmail");
+    if (email == null) return "redirect:/forgot-password";
+
+    Optional<User> userOpt = userRepository.findByEmail(email);
+    if (userOpt.isEmpty()) return "redirect:/forgot-password";
+
+    User user = userOpt.get();
+
+    if (LocalDateTime.now().isAfter(user.getOtpExpiry())) {
+        model.addAttribute("error", "OTP expired! Try again.");
+        model.addAttribute("email", email);
+        return "reset-otp";
+    }
+
+    if (!user.getOtp().equals(otp.trim())) {
+        model.addAttribute("error", "Wrong OTP!");
+        model.addAttribute("email", email);
+        return "reset-otp";
+    }
+
+    session.setAttribute("resetVerified", true);
+    return "redirect:/reset-password";
+}
+
+// Show new password page
+@GetMapping("/reset-password")
+public String resetPasswordPage(HttpSession session) {
+    if (session.getAttribute("resetVerified") == null) {
+        return "redirect:/forgot-password";
+    }
+    return "reset-password";
+}
+
+// Save new password
+@PostMapping("/reset-password")
+public String resetPassword(
+        @RequestParam String password,
+        HttpSession session,
+        Model model) {
+
+    String email = (String) session.getAttribute("resetEmail");
+    if (email == null) return "redirect:/forgot-password";
+
+    Optional<User> userOpt = userRepository.findByEmail(email);
+    if (userOpt.isEmpty()) return "redirect:/forgot-password";
+
+    User user = userOpt.get();
+    user.setPassword(encoder.encode(password));
+    user.setOtp(null);
+    userRepository.save(user);
+
+    session.removeAttribute("resetEmail");
+    session.removeAttribute("resetVerified");
+
+    return "redirect:/login?passwordReset";
+}
 }

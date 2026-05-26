@@ -33,4 +33,17 @@ public class EmailService {
         );
         mailSender.send(message);
     }
+    public void sendPasswordResetOTP(String toEmail, String otp) {
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(toEmail);
+    message.setSubject("CogniLoad — Password Reset Code");
+    message.setText(
+            "Hello!\n\n" +
+                    "Your password reset code is: " + otp + "\n\n" +
+                    "This code expires in 10 minutes.\n\n" +
+                    "If you didn't request this, ignore this email.\n\n" +
+                    "— CogniLoad Team"
+    );
+    mailSender.send(message);
+}
 }
