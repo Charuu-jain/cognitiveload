@@ -11,8 +11,9 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class GeminiService {
 
-    @Value("${AIzaSyB5TIBe6I74qwNgjRfxBBPRUBMlGjVp5D4}")
-    private String apiKey;
+   // To this — with a default fallback:
+@Value("${gemini.api.key:AIzaSyB5TIBe6I74qwNgjRfxBBPRUBM1GjVp5D4}")
+private String apiKey;
 
     private static final String API_URL =
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=";
