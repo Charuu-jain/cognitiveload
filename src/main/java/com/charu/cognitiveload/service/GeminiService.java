@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class GeminiService {
 
-    @Value("${gemini.api.key}")
+    @Value("${AIzaSyB5TIBe6I74qwNgjRfxBBPRUBMlGjVp5D4}")
     private String apiKey;
 
     private static final String API_URL =
@@ -80,25 +80,27 @@ public class GeminiService {
     }
 
     // SUMMARIZATION
-    public String summarize(String text) {
-        // Limit text to avoid token limits
-        String trimmed = text.length() > 3000
-            ? text.substring(0, 3000) : text;
+   public String summarize(String text) {
+    String trimmed = text.length() > 4000
+        ? text.substring(0, 4000) : text;
 
-        String prompt =
-            "You are an academic content analyzer. " +
-            "Summarize the following academic document " +
-            "in exactly 5 clear bullet points. " +
-            "Each bullet point should be one complete " +
-            "sentence explaining a key concept. " +
-            "Format: start each point with '• '. " +
-            "Do not add any intro or outro text.\n\n"
-            + trimmed;
+    String prompt =
+        "You are an academic document analyzer. " +
+        "Read the following academic document carefully and write a " +
+        "comprehensive summary in 3-4 full paragraphs. " +
+        "The summary should explain: what the document is about, " +
+        "the key concepts covered, the main arguments or findings, " +
+        "and the overall conclusion. " +
+        "Write in clear academic English. " +
+        "Do NOT use bullet points. Return ONLY the summary paragraphs, " +
+        "no headings, no intro like 'This document...', " +
+        "just the summary directly.\n\n" + trimmed;
 
-        String result = generate(prompt);
-        return result != null ? result
-            : "Summary could not be generated.";
-    }
+    String result = generate(prompt);
+    System.out.println("GEMINI SUMMARY: " + result);
+    return result != null ? result
+        : "Summary could not be generated for this document.";
+}
 
     // QUIZ GENERATION
     public String generateQuizJSON(String text) {
