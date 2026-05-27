@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 public class GeminiService {
 
    // To this — with a default fallback:
-@Value("${gemini.api.key:AIzaSyB5TIBe6I74qwNgjRfxBBPRUBM1GjVp5D4}")
+@Value("${gemini.api.key:}")
 private String apiKey;
 
     private static final String API_URL =
